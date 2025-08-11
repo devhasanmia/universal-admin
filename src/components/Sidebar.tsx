@@ -11,6 +11,21 @@ import {
   LogOut,
   ChevronRight,
 } from "lucide-react";
+import { useNavigate } from "react-router";
+
+// ---------- Types ----------
+interface SubMenuItem {
+  icon?: React.ComponentType<{ className?: string }>;
+  label: string;
+  path: string;
+}
+
+interface MenuItem {
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  path: string;
+  subMenu?: SubMenuItem[]; // optional
+}
 
 interface SidebarProps {
   collapsed: boolean;
@@ -19,25 +34,35 @@ interface SidebarProps {
   onToggle: () => void;
 }
 
+// ---------- Component ----------
 const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile, onClose }) => {
   const [openSubMenu, setOpenSubMenu] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  const menuItems = [
-    { icon: LayoutDashboard, label: "Dashboard", active: true },
+  const menuItems: MenuItem[] = [
+    { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard" },
     {
       icon: Users,
       label: "Users",
-      subMenu: [{ icon: BarChart3, label: "Add User" }, { label: "User List" }],
+      path: "/users",
+      subMenu: [
+        { icon: BarChart3, label: "Add User", path: "/users/add" },
+        { label: "User List", path: "/users/list" },
+      ],
     },
-    { icon: BarChart3, label: "Analytics" },
-    { icon: ShoppingCart, label: "Orders" },
-    { icon: FileText, label: "Reports" },
-    { icon: MessageSquare, label: "Messages" },
-    { icon: Calendar, label: "Calendar" },
+    { icon: BarChart3, label: "Analytics", path: "/analytics" },
+    { icon: ShoppingCart, label: "Orders", path: "/orders" },
+    { icon: FileText, label: "Reports", path: "/reports" },
+    { icon: MessageSquare, label: "Messages", path: "/messages" },
+    { icon: Calendar, label: "Calendar", path: "/calendar" },
     {
       icon: Settings,
       label: "Settings",
-      subMenu: [{ label: "Profile Settings" }, { label: "Security" }],
+      path: "/settings",
+      subMenu: [
+        { label: "Profile Settings", path: "/settings/profile" },
+        { label: "Security", path: "/settings/security" },
+      ],
     },
   ];
 
@@ -52,10 +77,9 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile, onClose }) => {
         <div className="flex items-center justify-between p-6">
           <div className="flex items-center animate-slide-in space-x-3">
             <div
-              className={`shadow-md font-semibold select-none
-                ${collapsed ? "h-6 w-6 text-2xl" : ""}
-                drop-shadow-sm text-white
-              `}
+              className={`shadow-md font-semibold select-none ${
+                collapsed ? "h-6 w-6 text-2xl" : ""
+              } drop-shadow-sm text-white`}
             >
               {collapsed ? "U" : ""}
             </div>
@@ -93,41 +117,34 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile, onClose }) => {
             </button>
           )}
         </div>
+
         {/* Navigation */}
         <nav className="flex-1 px-2 py-5 overflow-y-auto custom-scrollbar">
           <div className="space-y-2">
             {menuItems.map((item, index) => {
-              const hasSubMenu = !!item.subMenu;
+              const hasSubMenu = Array.isArray(item.subMenu);
               const isOpen = openSubMenu === item.label;
+
               return (
                 <div
                   key={item.label}
                   className="animate-slide-in"
                   style={{ animationDelay: `${(index + 1) * 0.1}s` }}
                 >
-                  <a
-                    href="#"
-                    className={`nav-link flex items-center px-5 py-3.5 rounded-2xl transition-all duration-300 group relative overflow-hidden cursor-pointer ${
-                      item.active
-                        ? "bg-blue-600 text-white shadow-lg"
-                        : "text-white/70 hover:text-white hover:bg-slate-600 hover:shadow-md"
-                    } ${collapsed ? "justify-center" : "justify-start"}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.currentTarget.blur();
-
+                  {/* Main Menu */}
+                  <div
+                    className={`nav-link flex items-center px-5 py-3.5 rounded-2xl transition-all duration-300 group relative overflow-hidden cursor-pointer text-white hover:bg-slate-600 hover:shadow-md ${
+                      collapsed ? "justify-center" : "justify-start"
+                    }`}
+                    onClick={() => {
                       if (hasSubMenu) {
                         setOpenSubMenu(isOpen ? null : item.label);
+                      } else {
+                        navigate(item.path);
                       }
                     }}
                   >
-                    <div
-                      className={`flex items-center flex-shrink-0 ${
-                        item.active
-                          ? "text-white"
-                          : "text-white/70 group-hover:text-white"
-                      } transition-colors duration-300`}
-                    >
+                    <div className="flex items-center flex-shrink-0 text-white transition-colors duration-300">
                       <item.icon
                         className={`${
                           collapsed ? "h-5 w-6" : "h-4 w-5"
@@ -143,53 +160,63 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile, onClose }) => {
                         {hasSubMenu && (
                           <ChevronRight
                             className={`w-4 h-4 ml-auto transition-transform duration-300 transform ${
-                              isOpen ? "rotate-90 text-white" : "text-white/60"
+                              isOpen
+                                ? "rotate-90 text-white"
+                                : "text-white/60"
                             }`}
                           />
                         )}
                       </>
                     )}
-                  </a>
-                  {/* submenu */}
-                  {!collapsed && hasSubMenu && isOpen && (
-                    <div className="pl-4 mt-2 space-y-1">
-                      {item.subMenu!.map((subItem) => {
-                        const Icon = subItem.icon;
+                  </div>
 
-                        return (
-                          <a
-                            key={subItem.label}
-                            href="#"
-                            className="flex items-center space-x-2 px-4 py-2 rounded-lg text-white/70 hover:text-white hover:bg-blue-700 transition-colors duration-300 text-sm text-left"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.currentTarget.blur();
-                            }}
-                          >
-                            {Icon && <Icon className="h-4 w-4 text-white/70" />}
-                            <span>{subItem.label}</span>
-                          </a>
-                        );
-                      })}
-                    </div>
-                  )}
+                  {/* Submenu */}
+                  {!collapsed &&
+                    hasSubMenu &&
+                    isOpen &&
+                    item.subMenu &&
+                    item.subMenu.map((subItem, subIndex) => {
+                      const Icon = subItem.icon;
+                      return (
+                        <div
+                          key={subItem.label}
+                          className={`ml-4 mt-1 nav-link flex items-center px-5 py-3.5 rounded-2xl transition-all duration-300 group relative overflow-hidden cursor-pointer text-white hover:bg-slate-600 hover:shadow-md ${
+                            collapsed ? "justify-center" : "justify-start"
+                          }`}
+                          style={{
+                            animationDelay: `${(subIndex + 1) * 0.1}s`,
+                          }}
+                          onClick={() => navigate(subItem.path)}
+                        >
+                          {Icon && (
+                            <Icon
+                              className={`${
+                                collapsed ? "h-5 w-6" : "h-4 w-5"
+                              } drop-shadow-sm`}
+                            />
+                          )}
+                          {!collapsed && (
+                            <span className="ml-4 font-semibold text-sm tracking-wide truncate">
+                              {subItem.label}
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })}
                 </div>
               );
             })}
           </div>
         </nav>
+
         {/* Logout */}
         <div className="p-3 border-t border-slate-600">
-          <a
-            href="#"
+          <div
             className={`nav-link flex items-center px-4 py-3.5 rounded-2xl text-white/70 hover:text-white hover:bg-red-500/20 hover:border-red-400/30 border border-transparent transition-all duration-300 animate-slide-in group ${
               collapsed ? "justify-center" : "justify-start"
             }`}
             style={{ animationDelay: "0.8s" }}
-            onClick={(e) => {
-              e.preventDefault();
-              e.currentTarget.blur();
-            }}
+            onClick={() => navigate("/logout")}
           >
             <LogOut
               className={`flex-shrink-0 ${
@@ -201,7 +228,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile, onClose }) => {
                 Logout
               </span>
             )}
-          </a>
+          </div>
         </div>
       </div>
     </aside>
