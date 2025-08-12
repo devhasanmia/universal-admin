@@ -3,13 +3,9 @@ import {
   LayoutDashboard,
   Users,
   BarChart3,
-  Settings,
-  FileText,
-  ShoppingCart,
-  MessageSquare,
-  Calendar,
   LogOut,
   ChevronRight,
+  Gauge,
 } from "lucide-react";
 import { useNavigate } from "react-router";
 
@@ -46,42 +42,26 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile, onClose }) => {
       label: "Users",
       path: "/users",
       subMenu: [
-        { icon: BarChart3, label: "Add User", path: "/users/add" },
+        { icon: BarChart3, label: "Users", path: "/users" },
         { label: "User List", path: "/users/list" },
       ],
-    },
-    { icon: BarChart3, label: "Analytics", path: "/analytics" },
-    { icon: ShoppingCart, label: "Orders", path: "/orders" },
-    { icon: FileText, label: "Reports", path: "/reports" },
-    { icon: MessageSquare, label: "Messages", path: "/messages" },
-    { icon: Calendar, label: "Calendar", path: "/calendar" },
-    {
-      icon: Settings,
-      label: "Settings",
-      path: "/settings",
-      subMenu: [
-        { label: "Profile Settings", path: "/settings/profile" },
-        { label: "Security", path: "/settings/security" },
-      ],
-    },
+    }
   ];
 
   return (
     <aside
-      className={`sidebar-gradient fixed top-0 left-0 z-40 h-screen transition-all duration-500 ease-in-out ${
-        collapsed ? (isMobile ? "-translate-x-full" : "w-16") : "w-64"
-      } shadow-2xl`}
+      className={`sidebar-gradient fixed top-0 left-0 z-40 h-screen transition-all duration-500 ease-in-out ${collapsed ? (isMobile ? "-translate-x-full" : "w-16") : "w-64"
+        } shadow-2xl`}
     >
       <div className="flex flex-col h-full">
         {/* Logo */}
         <div className="flex items-center justify-between p-6">
           <div className="flex items-center animate-slide-in space-x-3">
             <div
-              className={`shadow-md font-semibold select-none ${
-                collapsed ? "h-6 w-6 text-2xl" : ""
-              } drop-shadow-sm text-white`}
+              className={`shadow-md font-semibold select-none ${collapsed ? "h-6 w-6 text-2xl" : ""
+                } drop-shadow-sm text-white`}
             >
-              {collapsed ? "U" : ""}
+              {collapsed ? <Gauge /> : ""}
             </div>
             {!collapsed && (
               <div className="overflow-hidden">
@@ -133,9 +113,8 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile, onClose }) => {
                 >
                   {/* Main Menu */}
                   <div
-                    className={`nav-link flex items-center px-5 py-3.5 rounded-2xl transition-all duration-300 group relative overflow-hidden cursor-pointer text-white hover:bg-slate-600 hover:shadow-md ${
-                      collapsed ? "justify-center" : "justify-start"
-                    }`}
+                    className={`nav-link flex items-center px-5 py-3.5 rounded-2xl transition-all duration-300 group relative overflow-hidden cursor-pointer text-white hover:bg-slate-600 hover:shadow-md ${collapsed ? "justify-center" : "justify-start"
+                      }`}
                     onClick={() => {
                       if (hasSubMenu) {
                         setOpenSubMenu(isOpen ? null : item.label);
@@ -146,9 +125,8 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile, onClose }) => {
                   >
                     <div className="flex items-center flex-shrink-0 text-white transition-colors duration-300">
                       <item.icon
-                        className={`${
-                          collapsed ? "h-5 w-6" : "h-4 w-5"
-                        } drop-shadow-sm`}
+                        className={`${collapsed ? "h-5 w-6" : "h-4 w-5"
+                          } drop-shadow-sm`}
                       />
                     </div>
 
@@ -159,11 +137,10 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile, onClose }) => {
                         </span>
                         {hasSubMenu && (
                           <ChevronRight
-                            className={`w-4 h-4 ml-auto transition-transform duration-300 transform ${
-                              isOpen
-                                ? "rotate-90 text-white"
-                                : "text-white/60"
-                            }`}
+                            className={`w-4 h-4 ml-auto transition-transform duration-300 transform ${isOpen
+                              ? "rotate-90 text-white"
+                              : "text-white/60"
+                              }`}
                           />
                         )}
                       </>
@@ -180,9 +157,8 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile, onClose }) => {
                       return (
                         <div
                           key={subItem.label}
-                          className={`ml-4 mt-1 nav-link flex items-center px-5 py-3.5 rounded-2xl transition-all duration-300 group relative overflow-hidden cursor-pointer text-white hover:bg-slate-600 hover:shadow-md ${
-                            collapsed ? "justify-center" : "justify-start"
-                          }`}
+                          className={`ml-4 mt-1 nav-link flex items-center px-5 py-3.5 rounded-2xl transition-all duration-300 group relative overflow-hidden cursor-pointer text-white hover:bg-slate-600 hover:shadow-md ${collapsed ? "justify-center" : "justify-start"
+                            }`}
                           style={{
                             animationDelay: `${(subIndex + 1) * 0.1}s`,
                           }}
@@ -190,9 +166,8 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile, onClose }) => {
                         >
                           {Icon && (
                             <Icon
-                              className={`${
-                                collapsed ? "h-5 w-6" : "h-4 w-5"
-                              } drop-shadow-sm`}
+                              className={`${collapsed ? "h-5 w-6" : "h-4 w-5"
+                                } drop-shadow-sm`}
                             />
                           )}
                           {!collapsed && (
@@ -212,16 +187,14 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, isMobile, onClose }) => {
         {/* Logout */}
         <div className="p-3 border-t border-slate-600">
           <div
-            className={`nav-link flex items-center px-4 py-3.5 rounded-2xl text-white/70 hover:text-white hover:bg-red-500/20 hover:border-red-400/30 border border-transparent transition-all duration-300 animate-slide-in group ${
-              collapsed ? "justify-center" : "justify-start"
-            }`}
+            className={`nav-link flex items-center px-4 py-3.5 rounded-2xl text-white/70 hover:text-white hover:bg-red-500/20 hover:border-red-400/30 border border-transparent transition-all duration-300 animate-slide-in group ${collapsed ? "justify-center" : "justify-start"
+              }`}
             style={{ animationDelay: "0.8s" }}
             onClick={() => navigate("/logout")}
           >
             <LogOut
-              className={`flex-shrink-0 ${
-                collapsed ? "h-5 w-5" : "h-4 w-4"
-              } drop-shadow-sm group-hover:text-red-300 transition-colors duration-300`}
+              className={`flex-shrink-0 ${collapsed ? "h-5 w-5" : "h-4 w-4"
+                } drop-shadow-sm group-hover:text-red-300 transition-colors duration-300`}
             />
             {!collapsed && (
               <span className="ml-4 font-semibold text-sm tracking-wide">

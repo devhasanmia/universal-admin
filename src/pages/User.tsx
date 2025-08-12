@@ -1,7 +1,10 @@
+import UserProjectTable from "../components/ui/Table"
 
 const User = () => {
   return (
-    <div>User</div>
+    <div className="max-w-full overflow-x-auto">
+      <UserProjectTable />
+    </div>
   )
 }
 

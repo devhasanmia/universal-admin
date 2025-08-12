@@ -1,11 +1,12 @@
 import { createBrowserRouter } from "react-router";
-import App from "../App";
 import User from "../pages/User";
 import Dashboard from "../pages/Dashboard";
+import AdminLayout from "../components/layouts/AdminLayout";
+import NotFound from "../pages/NotFound";
 
 const router = createBrowserRouter([
   {
-    Component: App,
+    Component: AdminLayout,
     path: "/",
     children: [
       {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
         path: "users",
       }
     ]
+  },
+  {
+    path: "*",
+    Component: NotFound
   }
 ]);
 
