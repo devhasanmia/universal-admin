@@ -127,7 +127,7 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
           {/* Profile dropdown */}
           <div className="flex items-center space-x-2 pl-2 relative cursor-pointer">
             <div className="hidden sm:block text-right">
-              <p className="text-sm font-medium text-slate-900">John Doe</p>
+              <p className="text-sm font-medium text-slate-900">SUPER ADMIN</p>
               <p className="text-xs text-slate-500">Administrator</p>
             </div>
             <button

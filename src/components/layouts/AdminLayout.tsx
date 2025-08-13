@@ -52,7 +52,7 @@ const AdminLayout = () => {
                         collapsed={sidebarCollapsed}
                     />
 
-                    <main className="flex-1 p-6 bg-slate-50 dark:bg-slate-900 transition-colors duration-300 min-h-screen overflow-x-auto">
+                    <main className="flex-1 p-6 bg-slate-50 dark:bg-slate-900 transition-colors duration-300 w-full">
                         <Outlet />
                     </main>
                 </div>
