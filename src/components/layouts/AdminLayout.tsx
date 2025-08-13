@@ -31,7 +31,7 @@ const AdminLayout = () => {
         setDarkMode((prev) => !prev);
     };
     return (
-        <div className={`min-h-screen ${darkMode ? "dark" : ""}`}>
+        <div className={`min-h-screen ${darkMode ? "dark" : ""} overflow-auto`}>
             <div className="flex min-h-screen bg-slate-50 transition-colors duration-300">
                 <Sidebar
                     collapsed={sidebarCollapsed}
@@ -52,9 +52,10 @@ const AdminLayout = () => {
                         collapsed={sidebarCollapsed}
                     />
 
-                    <main className="flex-1 p-6 bg-slate-50 dark:bg-slate-900 transition-colors duration-300 w-full">
+                    <main className="flex-1 p-6 mx-auto bg-slate-50 dark:bg-slate-900 transition-colors duration-300 w-full">
                         <Outlet />
                     </main>
+
                 </div>
             </div>
 

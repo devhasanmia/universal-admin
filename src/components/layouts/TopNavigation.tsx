@@ -42,7 +42,6 @@ const TopNavigation: React.FC<TopNavigationProps> = ({
   const selectLanguage = (lang: typeof languages[0]) => {
     setSelectedLang(lang);
     setIsLangOpen(false);
-    // You can add your language change logic here
   };
 
   return (
